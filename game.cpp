@@ -128,8 +128,10 @@ void Game::clearLine(int y) {
   }
 
   remainingLines_ -= 1;
-  if (remainingLines_ == 0)
+  if (remainingLines_ <= 0) {
+    remainingLines_ = 0;
     win_ = true;
+  }
 }
 
 void Game::scanAndClear() {
@@ -218,8 +220,8 @@ std::string zeroPadding(std::string s) {
 
 std::string timeToString(int frames) {
   std::string s;
-  int seconds = frames / console::FPS;
-  int minutes = seconds / 60;
+  int seconds = (frames / console::FPS) % 60;
+  int minutes = (frames / console::FPS) / 60;
   int miniSeconds = (frames * 100 / console::FPS) % 100;
 
   return zeroPadding(std::to_string(minutes)) + ":" +
